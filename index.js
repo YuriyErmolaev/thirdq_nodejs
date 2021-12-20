@@ -6,7 +6,7 @@ if(
     !Number.isInteger(num1) ||
     !Number.isInteger(num2)
 ){
-    console.log(colors.red('Some of argument is not a number.'));
+    console.log(colors.red('Some of arguments is not a number.'));
     throw '';
 }
 
