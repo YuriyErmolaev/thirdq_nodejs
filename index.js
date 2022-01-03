@@ -7,8 +7,6 @@ let lineReader = readline.createInterface(
   }
 );
 
-let strPost;
-
 lineReader.on('line', (strPost) => {
 
   if( strPost.includes('89.123.1.41') ) {
