@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "g": "^2.0.1",
+    "inquirer": "^8.2.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "reader": "cli.js"
   },
   "repository": {
     "type": "git",
