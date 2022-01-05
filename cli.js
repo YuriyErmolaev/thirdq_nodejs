@@ -59,22 +59,22 @@ const getItem = (ipath) => {
 const checkInFile = ( temp, filepath ) => {    
     let lineReader = readline.createInterface(
         {input: fs.createReadStream(filepath, 'utf8')}
-    );  
-    
+    );
     let rpath = path.join(
         path.join(filepath, '../'),
         'finded.log'
     );
-
-    const checkAndWriteReq = (line, temp) => {          
-        if( line.includes(temp) ) {
+    const checkAndWriteReq = (line, temp) => {        
+        let re = new RegExp(temp);                
+        if( re.test(line) ) {
           fs.writeFile( rpath, line + '\n', { flag: 'a' }, (err) => { if(err) console.log(err); } );          
         }
-    }
-      
+    }      
     lineReader.on('line', (line) => {
         checkAndWriteReq(line, temp);        
     });
 };
 
 // C:\Learn\GeekBrains\Frontend_developer\thirdq_nodejs\4\forth_lesson\dir
+//(?:.*?\b\d+\b){2}
+//uuu
