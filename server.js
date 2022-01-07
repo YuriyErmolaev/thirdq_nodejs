@@ -10,8 +10,7 @@ const url = require('url');
 let curDir = process.cwd();
 let homePath = path.join(curDir, 'public');
 
-let getHtmlistItems = (items, ipath) => {    
-    items = ['..', ...items];
+let getHtmlistItems = (items, ipath) => {        
     let list = '', href;
     items.map(item =>{
         href = path.join(ipath, item);
@@ -37,6 +36,10 @@ http.createServer((request, response) => {
         response.writeHead(200, 'OK', {
             'Content-Type': 'text/html',
         });
+
+        
+        let upHref = path.join(subPath, '../')
+        response.write(`<a href='${upHref}'>..</a><hr/>`);
         
         if( fs.lstatSync(ipath).isDirectory() ) {
             let items = fs.readdirSync(ipath);
@@ -46,9 +49,6 @@ http.createServer((request, response) => {
         }
         if( fs.lstatSync(ipath).isFile() ) {            
             
-            let upHref = path.join(subPath, '../')
-            response.write(`<a href='${upHref}'>..</a><hr/>`);
-
             const readStream = fs.createReadStream(ipath);
             readStream.pipe(response);
             
