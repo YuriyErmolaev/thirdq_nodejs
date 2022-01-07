@@ -46,6 +46,9 @@ http.createServer((request, response) => {
         }
         if( fs.lstatSync(ipath).isFile() ) {            
             
+            let upHref = path.join(subPath, '../')
+            response.write(`<a href='${upHref}'>..</a><hr/>`);
+
             const readStream = fs.createReadStream(ipath);
             readStream.pipe(response);
             
