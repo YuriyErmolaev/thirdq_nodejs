@@ -45,20 +45,23 @@ http.createServer((request, response) => {
             response.end();
         }
         if( fs.lstatSync(ipath).isFile() ) {            
-            console.log('ipath file:', ipath);
             
-            let upHref = path.join(subPath, '../')
-            response.write(`<a href='${upHref}'>..</a><hr/>`);
+            const readStream = fs.createReadStream(ipath);
+            readStream.pipe(response);
+            
+            // console.log('ipath file:', ipath);            
+            // let upHref = path.join(subPath, '../')
+            // response.write(`<a href='${upHref}'>..</a><hr/>`);
 
-            let lineReader = require('readline').createInterface({
-                input: require('fs').createReadStream(ipath),
-              });
-            lineReader.on('line', (line) => {               
-                response.write(line + '<br/>');                
-            });            
-            lineReader.on('close', () => {                
-                response.end();
-            });
+            // let lineReader = require('readline').createInterface({
+            //     input: require('fs').createReadStream(ipath),
+            //   });
+            // lineReader.on('line', (line) => {               
+            //     response.write(line + '<br/>');                
+            // });            
+            // lineReader.on('close', () => {                
+            //     response.end();
+            // });
         }
     };
 }).listen(3003, 'localhost');
