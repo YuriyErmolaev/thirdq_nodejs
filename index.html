@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket</title>
+    <script src="https://cdn.socket.io/4.2.0/socket.io.min.js" integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="clientsNum"></div>
+<input id="input" type="text" autofocus>
+<button id="button">Send</button>
+<div id="messages"></div>
+<script>
+    const socket = io('localhost:5555');
+    const messagesBlock = document.querySelector('#messages');
+    const sendButton = document.querySelector('#button');
+    const input = document.querySelector('#input');
+    const clientsNumEl = document.querySelector('#clientsNum');
+    
+   
+    const uuid = () => {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    };
+   
+    class clientc {
+        constructor(){
+            this.uuid = uuid();        
+        }        
+    };    
+    let newClient = new clientc();
+
+    sendButton.addEventListener('click', () => {
+        const data = {
+            client: newClient,
+            message: input.value,
+        };
+        socket.emit('client-msg', data);
+        input.value = '';
+    });
+
+   
+
+   
+
+    socket.on('connect', () => {
+        console.log('Connected');
+        socket.emit('newClient', newClient);
+    });
+    socket.on('server-msg', (data) => {
+        messagesBlock.insertAdjacentHTML('afterbegin', `<div>Client ${data.client.uuid}: ${data.message}</div>`);
+    });
+
+    socket.on('newClientConnect', (newClient) => {
+        console.log('new client!');
+        messagesBlock.insertAdjacentHTML('afterbegin', `<div>New client connected!</div>`);
+    });
+
+    socket.on('clientDisConnect', (newClient) => {
+        console.log('client out');
+        messagesBlock.insertAdjacentHTML('afterbegin', `<div>Client disconnect!</div>`);
+    });
+
+    socket.on('changeClientsNum', (clientsNum) => {        
+        console.log('clientsNum: ', clientsNum);
+        clientsNumEl.innerHTML = clientsNum;        
+    });
+
+    
+
+</script>
+</body>
+</html>
